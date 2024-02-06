@@ -3,8 +3,8 @@ use serde;
 
 #[derive(Debug, serde::Deserialize)]
 pub struct OriginalRecord {
-    // boekingsdatum: String,
-    valutadatum: String,
+    boekingsdatum: String,
+    // valutadatum: String,
     tegenpartij: String,
     mededeling: String,
     bedrag: f64,
@@ -23,8 +23,8 @@ pub fn parse_csv(text: String) -> Vec<OriginalRecord> {
             let bedrag = bedrag.replace(",", ".");
             let bedrag = bedrag.parse::<f64>().ok().unwrap();
             OriginalRecord {
-                // boekingsdatum: record.get(1).unwrap().to_string(),
-                valutadatum: record.get(9).unwrap().to_string(),
+                boekingsdatum: record.get(1).unwrap().to_string(),
+                // valutadatum: record.get(9).unwrap().to_string(),
                 tegenpartij: record.get(5).unwrap().to_string(),
                 mededeling: record.get(14).unwrap().to_string(),
                 bedrag,
@@ -47,7 +47,7 @@ pub fn to_ynab_format(records: Vec<OriginalRecord>) -> String {
     for record in records {
         writer
             .write_record(&[
-                record.valutadatum,
+                record.boekingsdatum,
                 record.tegenpartij,
                 record.mededeling,
                 record.bedrag.to_string(),
